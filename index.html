@@ -3,9 +3,9 @@
 fetch("https://api.rss2json.com/v1/api.json?rss_url=https://www.lemonde.fr/rss/une.xml")
   .then(r => r.json())
   .then(data => {
-    document.getElementById("feed").innerHTML = data.items.slice(0, 5).map(i =>
-      `<div style="padding: 10px 0; border-bottom: 1px solid #ccc;">
-        <span style="font-size: 15px; line-height: 1.5;">${i.title}</span>
+    document.getElementById("feed").innerHTML = data.items.slice(0, 10).map(i =>
+      `<div style="padding: 12px 0; border-bottom: 1px solid #ccc;">
+        <span style="font-size: 20px; font-weight: bold; line-height: 1.4;">${i.title}</span>
       </div>`
     ).join("");
   });
