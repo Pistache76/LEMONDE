@@ -6,7 +6,7 @@
 </style>
 <div id="feed"></div>
 <script>
-  fetch("https://api.rss2json.com/v1/api.json?rss_url=https://www.lemonde.fr/cinema/rss_full.xml")
+  fetch("https://api.rss2json.com/v1/api.json?rss_url=https://www.allocine.fr/rss/news.xml")
     .then(r => r.json()).then(data => {
       document.getElementById("feed").innerHTML = data.items.slice(0,5).map(i =>
         `<div class="item"><div class="title">${i.title}</div>
