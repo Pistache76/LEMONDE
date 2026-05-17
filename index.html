@@ -1,16 +1,12 @@
-<style>
-  body { font: 18px sans-serif; background: white; color: black; padding: 10px; }
-  .item { margin-bottom: 16px; border-bottom: 1px solid #ccc; }
-  .title { font-weight: bold; }
-  .desc { word-wrap: break-word; white-space: normal; }
-</style>
 <div id="feed"></div>
 <script>
-  fetch("https://api.rss2json.com/v1/api.json?rss_url=https://www.lemonde.fr/rss/une.xml")
-    .then(r => r.json()).then(data => {
-      document.getElementById("feed").innerHTML = data.items.slice(0,5).map(i =>
-        `<div class="item"><div class="title">${i.title}</div>
-         <div class="desc">${i.description}</div></div>`
-      ).join("");
-    });
+fetch("https://api.rss2json.com/v1/api.json?rss_url=https://www.lemonde.fr/rss/une.xml")
+  .then(r => r.json())
+  .then(data => {
+    document.getElementById("feed").innerHTML = data.items.slice(0, 5).map(i =>
+      `<div style="padding: 10px 0; border-bottom: 1px solid #ccc;">
+        <span style="font-size: 15px; line-height: 1.5;">${i.title}</span>
+      </div>`
+    ).join("");
+  });
 </script>
