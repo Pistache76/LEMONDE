@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<script src="https://docs.getgrist.com/grist-plugin-api.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans,'system-ui',sans-serif);background:var(--color-background-tertiary,#f5f5f3);color:var(--color-text-primary,#1a1a18);min-height:100vh;padding:16px}
+
+/* ── Config panel ── */
+#config{background:var(--color-background-primary,#fff);border:0.5px solid var(--color-border-tertiary,rgba(0,0,0,.15));border-radius:12px;padding:20px;margin-bottom:20px}
+.cfg-title{font-size:15px;font-weight:500;margin-bottom:16px;display:flex;align-items:center;gap:8px;color:var(--color-text-primary)}
+.cfg-title i{font-size:18px;color:var(--color-text-secondary,#6b6b68)}
+.cfg-row{margin-bottom:14px}
+label.lbl{display:block;font-size:12px;color:var(--color-text-secondary,#6b6b68);margin-bottom:5px;font-weight:500}
+select,input[type=text]{width:100%;height:36px;border:0.5px solid var(--color-border-secondary,rgba(0,0,0,.3));border-radius:8px;padding:0 10px;font-size:13px;background:var(--color-background-primary,#fff);color:var(--color-text-primary,#1a1a18);appearance:none}
+select:focus,input:focus{outline:none;box-shadow:0 0 0 2px rgba(55,138,221,.35)}
+
+.fields-picker{border:0.5px solid var(--color-border-tertiary,rgba(0,0,0,.15));border-radius:8px;max-height:160px;overflow-y:auto;background:var(--color-background-secondary,#f9f9f7)}
+.fields-picker label{display:flex;align-items:center;gap:8px;padding:6px 10px;font-size:13px;cursor:pointer;border-bottom:0.5px solid var(--color-border-tertiary,rgba(0,0,0,.1))}
+.fields-picker label:last-child{border-bottom:none}
+.fields-picker label:hover{background:var(--color-background-tertiary,#f0f0ec)}
+.fields-picker input[type=checkbox]{accent-color:#378ADD;width:14px;height:14px;flex-shrink:0}
+
+.child-block{background:var(--color-background-secondary,#f9f9f7);border:0.5px solid var(--color-border-tertiary,rgba(0,0,0,.15));border-radius:8px;padding:12px;margin-top:10px}
+.child-block-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.child-block-title{font-size:13px;font-weight:500;color:var(--color-text-primary)}
+.btn-ghost{background:none;border:0.5px solid var(--color-border-secondary,rgba(0,0,0,.3));border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer;color:var(--color-text-secondary,#6b6b68);display:inline-flex;align-items:center;gap:4px}
+.btn-ghost:hover{background:var(--color-background-tertiary,#f0f0ec)}
+.btn-danger{border-color:rgba(226,75,74,.4);color:#a32d2d}
+.btn-danger:hover{background:#fcebeb}
+.btn-primary{background:var(--color-background-primary,#fff);border:0.5px solid var(--color-border-secondary,rgba(0,0,0,.3));border-radius:8px;padding:8px 16px;font-size:13px;font-weight:500;cursor:pointer;color:var(--color-text-primary,#1a1a18);display:inline-flex;align-items:center;gap:6px;width:100%;justify-content:center;margin-top:6px}
+.btn-primary:hover{background:var(--color-background-secondary,#f9f9f7)}
+.btn-run{background:#378ADD;color:#fff;border:none;border-radius:8px;padding:9px 20px;font-size:14px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:8px;width:100%;justify-content:center;margin-top:16px}
+.btn-run:hover{background:#185fa5}
+.btn-run:disabled{opacity:.5;cursor:not-allowed}
+
+/* ── Toggle config bar ── */
+#toggle-bar{display:flex;align-items:center;justify-content:space-between;background:var(--color-background-primary,#fff);border:0.5px solid var(--color-border-tertiary,rgba(0,0,0,.15));border-radius:8px;padding:8px 14px;margin-bottom:14px;cursor:pointer;user-select:none}
+#toggle-bar span{font-size:13px;color:var(--color-text-secondary,#6b6b68)}
+#toggle-bar i{font-size:16px;color:var(--color-text-secondary,#6b6b68);transition:transform .2s}
+#toggle-bar.open i.ti-chevron-down{transform:rotate(180deg)}
+
+/* ── Report ── */
+#report{display:none}
+.r-card{background:var(--color-background-primary,#fff);border:0.5px solid var(--color-border-tertiary,rgba(0,0,0,.15));border-radius:12px;margin-bottom:20px;overflow:hidden}
+.r-card-header{background:var(--color-background-secondary,#f9f9f7);border-bottom:0.5px solid var(--color-border-tertiary,rgba(0,0,0,.15));padding:12px 16px;display:flex;align-items:center;gap:8px}
+.r-card-header i{font-size:16px;color:var(--color-text-secondary,#6b6b68)}
+.r-card-header .r-id{font-size:11px;background:var(--color-background-tertiary,#f0f0ec);border-radius:4px;padding:1px 7px;color:var(--color-text-secondary,#6b6b68);border:0.5px solid var(--color-border-tertiary,rgba(0,0,0,.15))}
+.r-card-header .r-name{font-size:14px;font-weight:500}
+.r-fields{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1px;border-bottom:0.5px solid var(--color-border-tertiary,rgba(0,0,0,.15))}
+.r-field{padding:10px 14px;background:var(--color-background-primary,#fff)}
+.r-field:hover{background:var(--color-background-secondary,#f9f9f7)}
+.r-field-label{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:var(--color-text-tertiary,#9e9e9a);margin-bottom:3px}
+.r-field-value{font-size:13px;color:var(--color-text-primary,#1a1a18);word-break:break-word;line-height:1.5}
+.r-field-value.html-rendered{font-size:13px;line-height:1.6}
+.r-field-value.html-rendered *{max-width:100%}
+
+/* ── Children section ── */
+.r-children{padding:14px 16px}
+.r-children-title{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.07em;color:var(--color-text-secondary,#6b6b68);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.r-children-title i{font-size:14px}
+.r-child-row{background:var(--color-background-secondary,#f9f9f7);border:0.5px solid var(--color-border-tertiary,rgba(0,0,0,.15));border-radius:8px;padding:10px 14px;margin-bottom:8px;display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px}
+.r-child-row:last-child{margin-bottom:0}
+.r-child-field-label{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:var(--color-text-tertiary,#9e9e9a);margin-bottom:2px}
+.r-child-field-value{font-size:12px;color:var(--color-text-primary,#1a1a18);word-break:break-word;line-height:1.4}
+.r-no-children{font-size:12px;color:var(--color-text-tertiary,#9e9e9a);font-style:italic}
+
+.badge-count{background:var(--color-background-tertiary,#f0f0ec);border-radius:10px;padding:1px 8px;font-size:11px;color:var(--color-text-secondary,#6b6b68);border:0.5px solid var(--color-border-tertiary,rgba(0,0,0,.15))}
+#status{font-size:12px;color:var(--color-text-secondary,#6b6b68);margin-bottom:12px;min-height:18px}
+.empty-state{text-align:center;padding:40px 20px;color:var(--color-text-secondary,#6b6b68);font-size:14px}
+.empty-state i{font-size:32px;display:block;margin-bottom:8px;color:var(--color-text-tertiary,#9e9e9a)}
+.sep{height:0.5px;background:var(--color-border-tertiary,rgba(0,0,0,.15));margin:12px 0}
+</style>
+</head>
+<body>
+<h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden">Widget rapport Grist — configuration et affichage des enregistrements liés</h2>
+
+<div id="status"></div>
+
+<!-- Toggle config -->
+<div id="toggle-bar" class="open" onclick="toggleConfig()">
+  <span><i class="ti ti-settings" style="font-size:14px;margin-right:6px"></i>Configuration du rapport</span>
+  <i class="ti ti-chevron-down" aria-hidden="true"></i>
+</div>
+
+<!-- Config panel -->
+<div id="config">
+  <!-- Table mère -->
+  <div class="cfg-row">
+    <label class="lbl"><i class="ti ti-table" style="font-size:13px;vertical-align:-2px"></i> Table mère</label>
+    <select id="sel-parent" onchange="onParentChange()">
+      <option value="">— Choisir une table —</option>
+    </select>
+  </div>
+
+  <!-- Champs table mère -->
+  <div class="cfg-row" id="parent-fields-row" style="display:none">
+    <label class="lbl">Champs à afficher (table mère)</label>
+    <div class="fields-picker" id="parent-fields"></div>
+  </div>
+
+  <div class="sep"></div>
+
+  <!-- Tables filles -->
+  <div class="cfg-row">
+    <label class="lbl"><i class="ti ti-git-branch" style="font-size:13px;vertical-align:-2px"></i> Tables filles</label>
+    <div id="children-list"></div>
+    <button class="btn-primary" onclick="addChildTable()">
+      <i class="ti ti-plus" aria-hidden="true"></i> Ajouter une table fille
+    </button>
+  </div>
+
+  <button class="btn-run" id="btn-run" onclick="runReport()" disabled>
+    <i class="ti ti-report" aria-hidden="true"></i> Générer le rapport
+  </button>
+</div>
+
+<!-- Report -->
+<div id="report"></div>
+
+<script>
+let allTables = [];
+let tableData = {};
+let childBlocks = [];
+let childCount = 0;
+let configVisible = true;
+
+function setStatus(msg){ document.getElementById('status').textContent = msg; }
+
+function toggleConfig(){
+  configVisible = !configVisible;
+  document.getElementById('config').style.display = configVisible ? '' : 'none';
+  const bar = document.getElementById('toggle-bar');
+  bar.classList.toggle('open', configVisible);
+}
+
+async function fetchTableData(name){
+  if(tableData[name]) return tableData[name];
+  const raw = await grist.docApi.fetchTable(name);
+  const cols = Object.keys(raw).filter(k => k !== 'manualSort');
+  const rows = raw.id.map((id,i) => {
+    const r = {id};
+    for(const c of cols) if(c!=='id') r[c] = raw[c][i];
+    return r;
+  });
+  tableData[name] = {cols, rows};
+  return tableData[name];
+}
+
+async function onParentChange(){
+  const parent = document.getElementById('sel-parent').value;
+  const row = document.getElementById('parent-fields-row');
+  if(!parent){ row.style.display='none'; checkRunReady(); return; }
+  setStatus('Chargement des colonnes…');
+  const d = await fetchTableData(parent);
+  renderFieldsPicker('parent-fields', d.cols, [], 'parent-field-');
+  row.style.display = '';
+  setStatus('');
+  checkRunReady();
+}
+
+function renderFieldsPicker(containerId, cols, selectedCols, prefix){
+  const el = document.getElementById(containerId);
+  el.innerHTML = '';
+  for(const col of cols){
+    if(col==='id'||col==='manualSort') continue;
+    const lbl = document.createElement('label');
+    const chk = document.createElement('input');
+    chk.type = 'checkbox';
+    chk.value = col;
+    chk.id = prefix + col;
+    if(selectedCols.includes(col) || selectedCols.length===0) chk.checked = true;
+    lbl.appendChild(chk);
+    const span = document.createElement('span');
+    span.textContent = col;
+    lbl.appendChild(span);
+    el.appendChild(lbl);
+  }
+}
+
+function getCheckedFields(containerId){
+  return [...document.querySelectorAll(`#${containerId} input[type=checkbox]:checked`)].map(c=>c.value);
+}
+
+async function addChildTable(){
+  const parent = document.getElementById('sel-parent').value;
+  if(!parent){ alert('Choisissez d\'abord une table mère.'); return; }
+  const id = ++childCount;
+  const block = {id, tableName:'', fkCol:'', fieldContainerId:`child-fields-${id}`};
+  childBlocks.push(block);
+  renderChildBlocks();
+}
+
+function removeChild(id){
+  childBlocks = childBlocks.filter(b => b.id !== id);
+  renderChildBlocks();
+}
+
+function renderChildBlocks(){
+  const container = document.getElementById('children-list');
+  container.innerHTML = '';
+  for(const block of childBlocks){
+    const div = document.createElement('div');
+    div.className = 'child-block';
+    div.id = `child-block-${block.id}`;
+    div.innerHTML = `
+      <div class="child-block-header">
+        <span class="child-block-title">Table fille ${block.id}</span>
+        <button class="btn-ghost btn-danger" onclick="removeChild(${block.id})"><i class="ti ti-trash" aria-hidden="true"></i> Supprimer</button>
+      </div>
+      <div class="cfg-row">
+        <label class="lbl">Table</label>
+        <select id="child-table-${block.id}" onchange="onChildTableChange(${block.id})">
+          <option value="">— Choisir —</option>
+          ${allTables.map(t=>`<option value="${t}" ${t===block.tableName?'selected':''}>${t}</option>`).join('')}
+        </select>
+      </div>
+      <div class="cfg-row" id="child-fk-row-${block.id}" style="${block.tableName?'':'display:none'}">
+        <label class="lbl">Colonne de liaison (clé étrangère vers la table mère)</label>
+        <select id="child-fk-${block.id}"></select>
+      </div>
+      <div class="cfg-row" id="child-fields-row-${block.id}" style="${block.tableName?'':'display:none'}">
+        <label class="lbl">Champs à afficher</label>
+        <div class="fields-picker" id="child-fields-${block.id}"></div>
+      </div>`;
+    container.appendChild(div);
+    if(block.tableName) restoreChildUI(block);
+  }
+  checkRunReady();
+}
+
+async function onChildTableChange(id){
+  const sel = document.getElementById(`child-table-${id}`);
+  const block = childBlocks.find(b=>b.id===id);
+  block.tableName = sel.value;
+  if(!block.tableName) return;
+  setStatus('Chargement des colonnes…');
+  const d = await fetchTableData(block.tableName);
+  restoreChildUI(block, d);
+  setStatus('');
+  checkRunReady();
+}
+
+async function restoreChildUI(block, d){
+  if(!d) d = await fetchTableData(block.tableName);
+  document.getElementById(`child-fk-row-${block.id}`).style.display = '';
+  document.getElementById(`child-fields-row-${block.id}`).style.display = '';
+  const fkSel = document.getElementById(`child-fk-${block.id}`);
+  fkSel.innerHTML = d.cols.filter(c=>c!=='id'&&c!=='manualSort').map(c=>`<option value="${c}" ${c===block.fkCol?'selected':''}>${c}</option>`).join('');
+  renderFieldsPicker(`child-fields-${block.id}`, d.cols, [], `child-field-${block.id}-`);
+}
+
+function detectFk(cols, parentName){
+  const base = parentName.replace(/[^a-zA-Z0-9]/g,'').toLowerCase();
+  for(const c of cols){
+    const cn = c.replace(/[^a-zA-Z0-9]/g,'').toLowerCase();
+    if(cn===base||cn===base+'id'||cn==='id'+base) return c;
+  }
+  for(const c of cols) if(/id/i.test(c) && c!=='id') return c;
+  return cols.find(c=>c!=='id'&&c!=='manualSort') || '';
+}
+
+function checkRunReady(){
+  const ok = !!document.getElementById('sel-parent').value;
+  document.getElementById('btn-run').disabled = !ok;
+}
+
+function renderValue(val){
+  if(val===null||val===undefined) return '<span style="color:var(--color-text-tertiary,#9e9e9a)">—</span>';
+  if(typeof val==='boolean') return val ? '<span style="color:#0f6e56">Oui</span>' : '<span style="color:#993c1d">Non</span>';
+  if(typeof val==='object') return String(JSON.stringify(val));
+  return String(val).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+}
+
+function isHtmlValue(val){
+  return typeof val==='string' && /<[a-z][\s\S]*>/i.test(val);
+}
+
+async function runReport(){
+  const parentName = document.getElementById('sel-parent').value;
+  if(!parentName) return;
+
+  setStatus('Génération du rapport…');
+  document.getElementById('report').style.display = '';
+  document.getElementById('report').innerHTML = '';
+
+  const parentData = await fetchTableData(parentName);
+  const parentFields = getCheckedFields('parent-fields');
+  const fieldsToShow = parentFields.length ? parentFields : parentData.cols.filter(c=>c!=='id'&&c!=='manualSort');
+
+  // Gather child config
+  const children = [];
+  for(const block of childBlocks){
+    if(!block.tableName) continue;
+    const fkSel = document.getElementById(`child-fk-${block.id}`);
+    const fkCol = fkSel ? fkSel.value : detectFk((await fetchTableData(block.tableName)).cols, parentName);
+    const childFields = getCheckedFields(`child-fields-${block.id}`);
+    const childData = await fetchTableData(block.tableName);
+    const childFieldsToShow = childFields.length ? childFields : childData.cols.filter(c=>c!=='id'&&c!=='manualSort'&&c!==fkCol);
+    children.push({...block, fkCol, data: childData, fieldsToShow: childFieldsToShow});
+  }
+
+  const reportEl = document.getElementById('report');
+  if(parentData.rows.length === 0){
+    reportEl.innerHTML = '<div class="empty-state"><i class="ti ti-inbox" aria-hidden="true"></i>Aucune donnée dans la table mère.</div>';
+    setStatus('');
+    return;
+  }
+
+  for(const record of parentData.rows){
+    // Card header label = first visible text field
+    const titleField = fieldsToShow.find(f => typeof record[f]==='string' && record[f].trim().length>1);
+    const titleVal = titleField ? String(record[titleField]).substring(0,80) : `Ligne #${record.id}`;
+
+    let html = `<div class="r-card">
+      <div class="r-card-header">
+        <i class="ti ti-file-text" aria-hidden="true"></i>
+        <span class="r-name">${escHtml(titleVal)}</span>
+        <span class="r-id">#${record.id}</span>
+      </div>
+      <div class="r-fields">`;
+
+    for(const f of fieldsToShow){
+      const val = record[f];
+      const isHtml = isHtmlValue(val);
+      html += `<div class="r-field">
+        <div class="r-field-label">${escHtml(f)}</div>
+        <div class="r-field-value ${isHtml?'html-rendered':''}">${isHtml ? val : renderValue(val)}</div>
+      </div>`;
+    }
+    html += `</div>`;
+
+    // Children
+    if(children.length > 0){
+      html += `<div class="r-children">`;
+      for(const child of children){
+        const linked = child.data.rows.filter(r => r[child.fkCol] == record.id);
+        html += `<div class="r-children-title">
+          <i class="ti ti-git-branch" aria-hidden="true"></i>
+          ${escHtml(child.tableName.replace(/_/g,' '))}
+          <span class="badge-count">${linked.length}</span>
+        </div>`;
+        if(linked.length === 0){
+          html += `<p class="r-no-children">Aucune ligne liée.</p>`;
+        } else {
+          for(const row of linked){
+            html += `<div class="r-child-row">`;
+            for(const f of child.fieldsToShow){
+              const val = row[f];
+              const isHtml = isHtmlValue(val);
+              html += `<div>
+                <div class="r-child-field-label">${escHtml(f)}</div>
+                <div class="r-child-field-value ${isHtml?'html-rendered':''}">${isHtml ? val : renderValue(val)}</div>
+              </div>`;
+            }
+            html += `</div>`;
+          }
+        }
+      }
+      html += `</div>`;
+    }
+
+    html += `</div>`;
+    const cardEl = document.createElement('div');
+    cardEl.innerHTML = html;
+    reportEl.appendChild(cardEl);
+  }
+
+  setStatus(`${parentData.rows.length} ligne(s) affichée(s) — ${children.length} table(s) fille(s)`);
+  // Auto-collapse config
+  if(configVisible){ toggleConfig(); }
+}
+
+function escHtml(s){
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// ── Grist init ──────────────────────────────────────────
+
+grist.ready({ requiredAccess: 'read table' });
+
+grist.docApi.listTables().then(tables => {
+  allTables = tables;
+  const sel = document.getElementById('sel-parent');
+  for(const t of tables){
+    const opt = document.createElement('option');
+    opt.value = t; opt.textContent = t;
+    sel.appendChild(opt);
+  }
+  setStatus(`${tables.length} table(s) disponible(s).`);
+}).catch(e => setStatus('Erreur : ' + e.message));
+
+grist.onRecords(async () => {
+  tableData = {};
+  const parent = document.getElementById('sel-parent').value;
+  if(parent && document.getElementById('report').style.display !== 'none'){
+    runReport();
+  }
+});
+</script>
+</body>
+</html>
