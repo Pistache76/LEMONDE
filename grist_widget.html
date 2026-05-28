@@ -7,131 +7,78 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:var(--font-sans,'system-ui',sans-serif);background:var(--color-background-tertiary,#f5f5f3);color:var(--color-text-primary,#1a1a18);min-height:100vh;padding:16px}
-
-#status{font-size:12px;color:var(--color-text-secondary,#6b6b68);margin-bottom:10px;min-height:18px}
-
-#toggle-bar{display:flex;align-items:center;justify-content:space-between;background:var(--color-background-primary,#fff);border:0.5px solid var(--color-border-tertiary,rgba(0,0,0,.15));border-radius:8px;padding:8px 14px;margin-bottom:12px;cursor:pointer;user-select:none}
-#toggle-bar span{font-size:13px;color:var(--color-text-secondary,#6b6b68)}
-#toggle-bar i{font-size:16px;color:var(--color-text-secondary,#6b6b68);transition:transform .2s}
-#toggle-bar.open i.ti-chevron-down{transform:rotate(180deg)}
-
-#config{background:var(--color-background-primary,#fff);border:0.5px solid var(--color-border-tertiary,rgba(0,0,0,.15));border-radius:12px;padding:20px;margin-bottom:20px}
-.cfg-row{margin-bottom:14px}
-label.lbl{display:block;font-size:12px;color:var(--color-text-secondary,#6b6b68);margin-bottom:5px;font-weight:500}
-select{width:100%;height:36px;border:0.5px solid var(--color-border-secondary,rgba(0,0,0,.3));border-radius:8px;padding:0 10px;font-size:13px;background:var(--color-background-primary,#fff);color:var(--color-text-primary,#1a1a18)}
-select:focus{outline:none;box-shadow:0 0 0 2px rgba(55,138,221,.35)}
-
-.fields-picker{border:0.5px solid var(--color-border-tertiary,rgba(0,0,0,.15));border-radius:8px;max-height:150px;overflow-y:auto;background:var(--color-background-secondary,#f9f9f7)}
-.fields-picker label{display:flex;align-items:center;gap:8px;padding:6px 10px;font-size:13px;cursor:pointer;border-bottom:0.5px solid var(--color-border-tertiary,rgba(0,0,0,.1))}
+body{font-family:system-ui,sans-serif;background:var(--color-background-tertiary,#f5f5f3);color:var(--color-text-primary,#1a1a18);padding:14px;font-size:13px}
+#status{font-size:12px;color:var(--color-text-secondary,#6b6b68);margin-bottom:10px;min-height:16px;padding:4px 8px;background:var(--color-background-secondary,#f9f9f7);border-radius:6px;border:0.5px solid var(--color-border-tertiary,rgba(0,0,0,.1))}
+.section{background:var(--color-background-primary,#fff);border:0.5px solid var(--color-border-tertiary,rgba(0,0,0,.15));border-radius:10px;padding:14px;margin-bottom:12px}
+.section-title{font-size:12px;font-weight:500;color:var(--color-text-secondary,#6b6b68);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+label.lbl{display:block;font-size:11px;color:var(--color-text-secondary,#6b6b68);margin-bottom:4px;font-weight:500}
+select{width:100%;height:34px;border:0.5px solid var(--color-border-secondary,rgba(0,0,0,.3));border-radius:7px;padding:0 8px;font-size:12px;background:var(--color-background-primary,#fff);color:var(--color-text-primary,#1a1a18);margin-bottom:10px}
+select:focus{outline:none;box-shadow:0 0 0 2px rgba(55,138,221,.3)}
+.fields-picker{border:0.5px solid var(--color-border-tertiary,rgba(0,0,0,.12));border-radius:7px;max-height:120px;overflow-y:auto;background:var(--color-background-secondary,#f9f9f7);margin-bottom:10px}
+.fields-picker label{display:flex;align-items:center;gap:7px;padding:5px 9px;font-size:12px;cursor:pointer;border-bottom:0.5px solid var(--color-border-tertiary,rgba(0,0,0,.08))}
 .fields-picker label:last-child{border-bottom:none}
 .fields-picker label:hover{background:var(--color-background-tertiary,#f0f0ec)}
-.fields-picker input[type=checkbox]{accent-color:#378ADD;width:14px;height:14px;flex-shrink:0}
-
-.child-block{background:var(--color-background-secondary,#f9f9f7);border:0.5px solid var(--color-border-tertiary,rgba(0,0,0,.15));border-radius:8px;padding:12px;margin-top:10px}
-.child-block-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-.child-block-title{font-size:13px;font-weight:500}
-.btn-ghost{background:none;border:0.5px solid var(--color-border-secondary,rgba(0,0,0,.3));border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer;color:var(--color-text-secondary,#6b6b68);display:inline-flex;align-items:center;gap:4px}
-.btn-ghost:hover{background:var(--color-background-tertiary,#f0f0ec)}
-.btn-danger{border-color:rgba(226,75,74,.4);color:#a32d2d}
-.btn-danger:hover{background:#fcebeb}
-.btn-add{background:var(--color-background-primary,#fff);border:0.5px solid var(--color-border-secondary,rgba(0,0,0,.3));border-radius:8px;padding:8px 16px;font-size:13px;cursor:pointer;color:var(--color-text-primary,#1a1a18);display:inline-flex;align-items:center;gap:6px;width:100%;justify-content:center;margin-top:8px}
+.fields-picker input[type=checkbox]{accent-color:#378ADD;width:13px;height:13px;flex-shrink:0}
+.child-block{background:var(--color-background-secondary,#f9f9f7);border:0.5px solid var(--color-border-tertiary,rgba(0,0,0,.12));border-radius:7px;padding:10px;margin-bottom:8px}
+.child-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.child-title{font-size:12px;font-weight:500}
+.btn-sm{background:none;border:0.5px solid var(--color-border-secondary,rgba(0,0,0,.25));border-radius:5px;padding:3px 8px;font-size:11px;cursor:pointer;color:var(--color-text-secondary,#6b6b68);display:inline-flex;align-items:center;gap:3px}
+.btn-sm:hover{background:var(--color-background-tertiary,#f0f0ec)}
+.btn-del{border-color:rgba(226,75,74,.35);color:#a32d2d}
+.btn-del:hover{background:#fcebeb}
+.btn-add{width:100%;background:var(--color-background-primary,#fff);border:0.5px dashed var(--color-border-secondary,rgba(0,0,0,.25));border-radius:7px;padding:7px;font-size:12px;cursor:pointer;color:var(--color-text-secondary,#6b6b68);display:flex;align-items:center;justify-content:center;gap:5px;margin-top:4px}
 .btn-add:hover{background:var(--color-background-secondary,#f9f9f7)}
-.btn-run{background:#378ADD;color:#fff;border:none;border-radius:8px;padding:9px 20px;font-size:14px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:8px;width:100%;justify-content:center;margin-top:16px}
+.btn-run{width:100%;background:#378ADD;color:#fff;border:none;border-radius:8px;padding:10px;font-size:13px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;margin-top:4px}
 .btn-run:hover{background:#185fa5}
-.btn-run:disabled{opacity:.5;cursor:not-allowed}
-.sep{height:0.5px;background:var(--color-border-tertiary,rgba(0,0,0,.15));margin:14px 0}
-
-/* rapport */
-#report{}
-.r-card{background:var(--color-background-primary,#fff);border:0.5px solid var(--color-border-tertiary,rgba(0,0,0,.15));border-radius:12px;margin-bottom:20px;overflow:hidden}
-.r-card-header{background:var(--color-background-secondary,#f9f9f7);border-bottom:0.5px solid var(--color-border-tertiary,rgba(0,0,0,.15));padding:10px 16px;display:flex;align-items:center;gap:8px}
-.r-card-header i{font-size:15px;color:var(--color-text-secondary,#6b6b68)}
-.r-name{font-size:14px;font-weight:500;flex:1}
-.r-id{font-size:11px;background:var(--color-background-tertiary,#f0f0ec);border-radius:4px;padding:1px 7px;color:var(--color-text-secondary,#6b6b68);border:0.5px solid var(--color-border-tertiary,rgba(0,0,0,.15))}
-.r-fields{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1px;background:var(--color-border-tertiary,rgba(0,0,0,.1));border-bottom:0.5px solid var(--color-border-tertiary,rgba(0,0,0,.15))}
-.r-field{padding:10px 14px;background:var(--color-background-primary,#fff)}
-.r-field-label{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:var(--color-text-tertiary,#9e9e9a);margin-bottom:3px}
-.r-field-value{font-size:13px;color:var(--color-text-primary,#1a1a18);word-break:break-word;line-height:1.5}
-.r-field-value.html-rendered{line-height:1.6}
-.r-field-value.html-rendered *{max-width:100%}
-.r-children{padding:14px 16px}
-.r-children-group{margin-bottom:14px}
-.r-children-group:last-child{margin-bottom:0}
-.r-children-title{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.07em;color:var(--color-text-secondary,#6b6b68);margin-bottom:8px;display:flex;align-items:center;gap:6px}
-.r-children-title i{font-size:13px}
-.badge-count{background:var(--color-background-tertiary,#f0f0ec);border-radius:10px;padding:1px 8px;font-size:11px;color:var(--color-text-secondary,#6b6b68);border:0.5px solid var(--color-border-tertiary,rgba(0,0,0,.15))}
-.r-child-row{background:var(--color-background-secondary,#f9f9f7);border:0.5px solid var(--color-border-tertiary,rgba(0,0,0,.15));border-radius:8px;padding:10px 14px;margin-bottom:6px;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
-.r-child-row:last-child{margin-bottom:0}
-.r-child-label{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:var(--color-text-tertiary,#9e9e9a);margin-bottom:2px}
-.r-child-value{font-size:12px;color:var(--color-text-primary,#1a1a18);word-break:break-word;line-height:1.4}
-.r-no-children{font-size:12px;color:var(--color-text-tertiary,#9e9e9a);font-style:italic}
-.empty-state{text-align:center;padding:40px;color:var(--color-text-secondary,#6b6b68);font-size:14px}
-.empty-state i{font-size:32px;display:block;margin-bottom:8px;color:var(--color-text-tertiary,#9e9e9a)}
+.btn-run:disabled{opacity:.45;cursor:not-allowed}
+.hidden{display:none}
+.info{font-size:11px;color:var(--color-text-tertiary,#9e9e9a);margin-top:4px;font-style:italic}
 </style>
 </head>
 <body>
-<h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden">Widget rapport Grist</h2>
 
 <div id="status">Connexion à Grist…</div>
 
-<div id="toggle-bar" class="open" onclick="toggleConfig()">
-  <span><i class="ti ti-settings" style="font-size:14px;margin-right:6px" aria-hidden="true"></i>Configuration du rapport</span>
-  <i class="ti ti-chevron-down" aria-hidden="true"></i>
-</div>
-
-<div id="config">
-  <div class="cfg-row">
-    <label class="lbl">Table mère</label>
-    <select id="sel-parent" onchange="onParentChange()">
-      <option value="">— Choisir une table —</option>
-    </select>
-  </div>
-  <div id="parent-fields-row" style="display:none" class="cfg-row">
-    <label class="lbl">Champs à afficher (table mère)</label>
+<div class="section">
+  <div class="section-title"><i class="ti ti-table" aria-hidden="true"></i> Table mère</div>
+  <label class="lbl">Choisir la table</label>
+  <select id="sel-parent" onchange="onParentChange()">
+    <option value="">— Choisir —</option>
+  </select>
+  <div id="parent-fields-wrap" class="hidden">
+    <label class="lbl">Champs à afficher</label>
     <div class="fields-picker" id="parent-fields"></div>
   </div>
-  <div class="sep"></div>
-  <div class="cfg-row">
-    <label class="lbl">Tables filles</label>
-    <div id="children-list"></div>
-    <button class="btn-add" onclick="addChild()">
-      <i class="ti ti-plus" aria-hidden="true"></i> Ajouter une table fille
-    </button>
-  </div>
-  <button class="btn-run" id="btn-run" onclick="runReport()" disabled>
-    <i class="ti ti-report" aria-hidden="true"></i> Générer le rapport
-  </button>
 </div>
 
-<div id="report"></div>
+<div class="section">
+  <div class="section-title"><i class="ti ti-git-branch" aria-hidden="true"></i> Tables filles</div>
+  <div id="children-list"></div>
+  <button class="btn-add" onclick="addChild()"><i class="ti ti-plus" aria-hidden="true"></i> Ajouter une table fille</button>
+</div>
+
+<button class="btn-run" id="btn-run" onclick="runReport()" disabled>
+  <i class="ti ti-external-link" aria-hidden="true"></i> Générer le rapport (nouvel onglet)
+</button>
+<p class="info" style="text-align:center;margin-top:6px">Le rapport s'ouvrira dans un nouvel onglet du navigateur</p>
 
 <script>
-// ── état global ──────────────────────────────────────────
 let allTables = [];
-let cache = {};          // tableName -> {cols, rows}
+let cache = {};
 let childBlocks = [];
 let childCount = 0;
-let configVisible = true;
 
 function setStatus(m){ document.getElementById('status').textContent = m; }
-function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-function isHtml(v){ return typeof v==='string' && /<[a-zA-Z][\s\S]*>/.test(v); }
+function esc(s){ return String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>'); }
+function isHtml(v){ return typeof v==='string' && /<[a-zA-Z]/.test(v); }
 
-function renderVal(v){
-  if(v===null||v===undefined||v==='') return '<span style="color:var(--color-text-tertiary,#9e9e9a)">—</span>';
-  if(typeof v==='boolean') return v?'<span style="color:#0f6e56">Oui</span>':'<span style="color:#993c1d">Non</span>';
-  if(typeof v==='object') return esc(JSON.stringify(v));
-  return esc(String(v)).replace(/\n/g,'<br>');
-}
-
-// ── fetch via grist.docApi ───────────────────────────────
+// ── Fetch table via docApi ───────────────────────────────
 async function fetchTable(name){
   if(cache[name]) return cache[name];
-  try {
+  try{
     const raw = await grist.docApi.fetchTable(name);
     const cols = Object.keys(raw).filter(k=>k!=='manualSort');
-    const ids = raw['id'] || [];
+    const ids = Array.isArray(raw.id) ? raw.id : [];
     const rows = ids.map((id,i)=>{
       const r={id};
       for(const c of cols) if(c!=='id') r[c]=raw[c][i];
@@ -139,27 +86,22 @@ async function fetchTable(name){
     });
     cache[name]={cols,rows};
     return cache[name];
-  } catch(e){
-    setStatus('Erreur chargement '+name+' : '+e.message);
+  }catch(e){
+    setStatus('Erreur fetch '+name+': '+e.message);
     return {cols:[],rows:[]};
   }
 }
 
-// ── config UI ────────────────────────────────────────────
-function toggleConfig(){
-  configVisible=!configVisible;
-  document.getElementById('config').style.display=configVisible?'':'none';
-  document.getElementById('toggle-bar').classList.toggle('open',configVisible);
-}
-
-function buildFieldsPicker(containerId, cols, prefix){
+// ── UI helpers ───────────────────────────────────────────
+function buildPicker(containerId, cols, prefix){
   const el=document.getElementById(containerId);
+  if(!el) return;
   el.innerHTML='';
   for(const c of cols){
     if(c==='id'||c==='manualSort') continue;
     const lbl=document.createElement('label');
     const chk=document.createElement('input');
-    chk.type='checkbox'; chk.checked=true; chk.value=c; chk.id=prefix+c;
+    chk.type='checkbox'; chk.checked=true; chk.value=c;
     lbl.appendChild(chk);
     const sp=document.createElement('span'); sp.textContent=c;
     lbl.appendChild(sp);
@@ -168,18 +110,18 @@ function buildFieldsPicker(containerId, cols, prefix){
 }
 
 function getChecked(containerId){
-  return [...document.querySelectorAll('#'+containerId+' input[type=checkbox]:checked')].map(c=>c.value);
+  return [...document.querySelectorAll('#'+containerId+' input[type=checkbox]:checked')].map(x=>x.value);
 }
 
 async function onParentChange(){
   const name=document.getElementById('sel-parent').value;
-  const row=document.getElementById('parent-fields-row');
-  if(!name){row.style.display='none';checkRun();return;}
-  setStatus('Chargement colonnes…');
+  const wrap=document.getElementById('parent-fields-wrap');
+  if(!name){ wrap.classList.add('hidden'); checkRun(); return; }
+  setStatus('Chargement colonnes de '+name+'…');
   const d=await fetchTable(name);
-  buildFieldsPicker('parent-fields',d.cols,'pf-');
-  row.style.display='';
-  setStatus('');
+  buildPicker('parent-fields', d.cols, 'pf-');
+  wrap.classList.remove('hidden');
+  setStatus(d.rows.length+' lignes dans '+name);
   checkRun();
 }
 
@@ -201,176 +143,167 @@ function renderChildren(){
     const div=document.createElement('div');
     div.className='child-block';
     div.innerHTML=`
-      <div class="child-block-header">
-        <span class="child-block-title">Table fille ${b.id}</span>
-        <button class="btn-ghost btn-danger" onclick="removeChild(${b.id})"><i class="ti ti-trash" aria-hidden="true"></i> Supprimer</button>
+      <div class="child-header">
+        <span class="child-title">Table fille ${b.id}</span>
+        <button class="btn-sm btn-del" onclick="removeChild(${b.id})"><i class="ti ti-trash" aria-hidden="true"></i> Supprimer</button>
       </div>
-      <div class="cfg-row">
-        <label class="lbl">Table</label>
-        <select id="ct-${b.id}" onchange="onChildTableChange(${b.id})">
-          <option value="">— Choisir —</option>
-          ${allTables.map(t=>`<option value="${t}"${t===b.tableName?' selected':''}>${t}</option>`).join('')}
-        </select>
-      </div>
-      <div id="cf-fk-row-${b.id}" style="${b.tableName?'':'display:none'}" class="cfg-row">
+      <label class="lbl">Table</label>
+      <select id="ct-${b.id}" onchange="onChildChange(${b.id})">
+        <option value="">— Choisir —</option>
+        ${allTables.map(t=>`<option value="${t}"${t===b.tableName?' selected':''}>${t}</option>`).join('')}
+      </select>
+      <div id="cf-wrap-${b.id}" class="${b.tableName?'':'hidden'}">
         <label class="lbl">Colonne de liaison (clé étrangère)</label>
         <select id="cf-fk-${b.id}"></select>
-      </div>
-      <div id="cf-fields-row-${b.id}" style="${b.tableName?'':'display:none'}" class="cfg-row">
-        <label class="lbl">Champs à afficher</label>
+        <label class="lbl" style="margin-top:8px">Champs à afficher</label>
         <div class="fields-picker" id="cf-fields-${b.id}"></div>
       </div>`;
     container.appendChild(div);
-    if(b.tableName) restoreChild(b);
+    if(b.tableName) populateChildUI(b);
   }
-  checkRun();
 }
 
-async function onChildTableChange(id){
+async function onChildChange(id){
   const name=document.getElementById('ct-'+id).value;
   const b=childBlocks.find(x=>x.id===id);
   b.tableName=name;
-  if(!name) return;
-  setStatus('Chargement colonnes…');
-  await restoreChild(b);
+  b.fkCol='';
+  const wrap=document.getElementById('cf-wrap-'+id);
+  if(!name){ wrap.classList.add('hidden'); return; }
+  setStatus('Chargement colonnes de '+name+'…');
+  await populateChildUI(b);
   setStatus('');
-  checkRun();
 }
 
-async function restoreChild(b){
+async function populateChildUI(b){
   const d=await fetchTable(b.tableName);
-  document.getElementById('cf-fk-row-'+b.id).style.display='';
-  document.getElementById('cf-fields-row-'+b.id).style.display='';
-  const fkSel=document.getElementById('cf-fk-'+b.id);
+  const wrap=document.getElementById('cf-wrap-'+b.id);
+  wrap.classList.remove('hidden');
   const userCols=d.cols.filter(c=>c!=='id'&&c!=='manualSort');
+  const fkSel=document.getElementById('cf-fk-'+b.id);
   fkSel.innerHTML=userCols.map(c=>`<option value="${c}"${c===b.fkCol?' selected':''}>${c}</option>`).join('');
-  // auto-detect FK
+  // auto-détection FK
   if(!b.fkCol){
     const parent=document.getElementById('sel-parent').value||'';
     const base=parent.replace(/[^a-zA-Z0-9]/g,'').toLowerCase();
     const auto=userCols.find(c=>{const cn=c.replace(/[^a-zA-Z0-9]/g,'').toLowerCase();return cn===base||cn===base+'id'||cn==='id'+base;})
-      || userCols.find(c=>/id/i.test(c)&&c!=='id')
-      || userCols[0];
+      ||userCols.find(c=>/id/i.test(c)&&c!=='id')
+      ||userCols[0];
     if(auto) fkSel.value=auto;
   }
-  buildFieldsPicker('cf-fields-'+b.id, d.cols, 'cf-'+b.id+'-');
+  buildPicker('cf-fields-'+b.id, d.cols, 'cff-'+b.id+'-');
 }
 
 function checkRun(){
   document.getElementById('btn-run').disabled=!document.getElementById('sel-parent').value;
 }
 
-// ── rapport ──────────────────────────────────────────────
+// ── Génération rapport dans nouvel onglet ────────────────
 async function runReport(){
   const parentName=document.getElementById('sel-parent').value;
   if(!parentName) return;
-  setStatus('Génération…');
-  cache={};  // forcer rechargement frais
+  setStatus('Génération du rapport…');
+  cache={};
 
   const pData=await fetchTable(parentName);
-  if(!pData.rows.length){
-    document.getElementById('report').innerHTML='<div class="empty-state"><i class="ti ti-inbox" aria-hidden="true"></i>Aucune donnée.</div>';
-    document.getElementById('report').style.display='';
-    setStatus('');
-    return;
-  }
-
   const pFields=getChecked('parent-fields');
   const pShow=pFields.length?pFields:pData.cols.filter(c=>c!=='id'&&c!=='manualSort');
 
-  // children config
   const children=[];
   for(const b of childBlocks){
     if(!b.tableName) continue;
-    const fkSel=document.getElementById('cf-fk-'+b.id);
-    const fk=fkSel?fkSel.value:'';
+    const fkEl=document.getElementById('cf-fk-'+b.id);
+    const fk=fkEl?fkEl.value:'';
     const cData=await fetchTable(b.tableName);
     const cFields=getChecked('cf-fields-'+b.id);
     const cShow=cFields.length?cFields:cData.cols.filter(c=>c!=='id'&&c!=='manualSort'&&c!==fk);
     children.push({name:b.tableName,fk,data:cData,show:cShow});
   }
 
-  const reportEl=document.getElementById('report');
-  reportEl.innerHTML='';
-  reportEl.style.display='';
+  // ── Construire le HTML du rapport ──
+  let html=`<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"/>
+<title>Rapport — ${esc(parentName)}</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:#f4f6f9;color:#1c2633;padding:24px;font-size:13px}
+h1{font-size:20px;font-weight:500;margin-bottom:20px;color:#1c2633;display:flex;align-items:center;gap:10px}
+h1 span.sub{font-size:13px;color:#6b7a8d;font-weight:400}
+.card{background:#fff;border:1px solid #dde3ec;border-radius:10px;margin-bottom:22px;overflow:hidden;page-break-inside:avoid}
+.card-header{background:#f0f4f8;border-bottom:1px solid #dde3ec;padding:10px 16px;display:flex;align-items:center;gap:8px;font-size:14px;font-weight:500}
+.card-id{font-size:11px;background:#e8ecf1;border-radius:4px;padding:1px 7px;color:#6b7a8d;font-weight:400}
+.fields{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1px;background:#dde3ec;border-bottom:1px solid #dde3ec}
+.field{padding:10px 14px;background:#fff}
+.field-label{font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:#9eaab8;margin-bottom:3px;font-weight:500}
+.field-value{font-size:13px;color:#1c2633;line-height:1.5;word-break:break-word}
+.children{padding:14px 16px}
+.child-group{margin-bottom:14px}
+.child-group:last-child{margin-bottom:0}
+.child-title{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:#6b7a8d;font-weight:500;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.badge{background:#eef2f7;border-radius:10px;padding:1px 8px;font-size:11px;color:#6b7a8d;border:1px solid #dde3ec}
+.child-row{background:#f7f9fc;border:1px solid #dde3ec;border-radius:7px;padding:10px 14px;margin-bottom:6px;display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px}
+.child-row:last-child{margin-bottom:0}
+.child-label{font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:#9eaab8;margin-bottom:2px;font-weight:500}
+.child-value{font-size:12px;color:#1c2633;line-height:1.4;word-break:break-word}
+.none{font-size:12px;color:#9eaab8;font-style:italic}
+@media print{body{background:#fff;padding:10px}.card{border:1px solid #ccc;margin-bottom:14px}}
+</style></head><body>`;
 
-  for(const rec of pData.rows){
-    // titre = 1ère colonne texte non vide
-    const titleF=pShow.find(f=>typeof rec[f]==='string'&&rec[f].trim().length>1);
-    const titleV=titleF?String(rec[titleF]).substring(0,80):'Ligne #'+rec.id;
+  html+=`<h1>Rapport <em>${esc(parentName)}</em> <span class="sub">${pData.rows.length} ligne(s) — généré le ${new Date().toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'})}</span></h1>`;
 
-    const card=document.createElement('div');
-    card.className='r-card';
-
-    // header
-    const hdr=document.createElement('div');
-    hdr.className='r-card-header';
-    hdr.innerHTML=`<i class="ti ti-file-text" aria-hidden="true"></i><span class="r-name">${esc(titleV)}</span><span class="r-id">#${rec.id}</span>`;
-    card.appendChild(hdr);
-
-    // champs mère
-    const grid=document.createElement('div');
-    grid.className='r-fields';
-    for(const f of pShow){
-      const v=rec[f];
-      const cell=document.createElement('div');
-      cell.className='r-field';
-      const lbl=document.createElement('div');
-      lbl.className='r-field-label';
-      lbl.textContent=f;
-      const val=document.createElement('div');
-      val.className='r-field-value'+(isHtml(v)?' html-rendered':'');
-      if(isHtml(v)) val.innerHTML=v; else val.innerHTML=renderVal(v);
-      cell.appendChild(lbl);
-      cell.appendChild(val);
-      grid.appendChild(cell);
-    }
-    card.appendChild(grid);
-
-    // tables filles
-    if(children.length){
-      const childSec=document.createElement('div');
-      childSec.className='r-children';
-      for(const ch of children){
-        const linked=ch.fk?ch.data.rows.filter(r=>String(r[ch.fk])===String(rec.id)):[];
-        const grp=document.createElement('div');
-        grp.className='r-children-group';
-        grp.innerHTML=`<div class="r-children-title"><i class="ti ti-git-branch" aria-hidden="true"></i>${esc(ch.name.replace(/_/g,' '))}<span class="badge-count">${linked.length}</span></div>`;
-        if(!linked.length){
-          grp.innerHTML+='<p class="r-no-children">Aucune ligne liée.</p>';
-        } else {
-          for(const row of linked){
-            const rowDiv=document.createElement('div');
-            rowDiv.className='r-child-row';
-            for(const f of ch.show){
-              const v=row[f];
-              const cell=document.createElement('div');
-              const lbl=document.createElement('div');
-              lbl.className='r-child-label';
-              lbl.textContent=f;
-              const val=document.createElement('div');
-              val.className='r-child-value'+(isHtml(v)?' html-rendered':'');
-              if(isHtml(v)) val.innerHTML=v; else val.innerHTML=renderVal(v);
-              cell.appendChild(lbl);
-              cell.appendChild(val);
-              rowDiv.appendChild(cell);
-            }
-            grp.appendChild(rowDiv);
-          }
-        }
-        childSec.appendChild(grp);
-      }
-      card.appendChild(childSec);
-    }
-
-    reportEl.appendChild(card);
+  function renderVal(v){
+    if(v===null||v===undefined||v==='') return '<span style="color:#9eaab8">—</span>';
+    if(typeof v==='boolean') return v?'<span style="color:#0f6e56">Oui</span>':'<span style="color:#993c1d">Non</span>';
+    if(typeof v==='object') return esc(JSON.stringify(v));
+    return esc(String(v)).replace(/\n/g,'<br>');
   }
 
-  setStatus(pData.rows.length+' ligne(s) — '+children.length+' table(s) fille(s)');
-  if(configVisible) toggleConfig();
+  for(const rec of pData.rows){
+    const titleF=pShow.find(f=>typeof rec[f]==='string'&&rec[f].trim().length>1);
+    const titleV=titleF?String(rec[titleF]).substring(0,100):'Ligne #'+rec.id;
+
+    html+=`<div class="card"><div class="card-header">${esc(titleV)} <span class="card-id">#${rec.id}</span></div><div class="fields">`;
+    for(const f of pShow){
+      const v=rec[f];
+      const rendered=isHtml(v)?v:renderVal(v);
+      html+=`<div class="field"><div class="field-label">${esc(f)}</div><div class="field-value">${rendered}</div></div>`;
+    }
+    html+=`</div>`;
+
+    if(children.length){
+      html+=`<div class="children">`;
+      for(const ch of children){
+        const linked=ch.fk?ch.data.rows.filter(r=>String(r[ch.fk])===String(rec.id)):[];
+        html+=`<div class="child-group"><div class="child-title">${esc(ch.name.replace(/_/g,' '))} <span class="badge">${linked.length}</span></div>`;
+        if(!linked.length){
+          html+=`<p class="none">Aucune ligne liée.</p>`;
+        } else {
+          for(const row of linked){
+            html+=`<div class="child-row">`;
+            for(const f of ch.show){
+              const v=row[f];
+              const rendered=isHtml(v)?v:renderVal(v);
+              html+=`<div><div class="child-label">${esc(f)}</div><div class="child-value">${rendered}</div></div>`;
+            }
+            html+=`</div>`;
+          }
+        }
+        html+=`</div>`;
+      }
+      html+=`</div>`;
+    }
+    html+=`</div>`;
+  }
+
+  html+=`</body></html>`;
+
+  // Ouvrir dans un nouvel onglet
+  const blob=new Blob([html],{type:'text/html;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  window.open(url,'_blank');
+  setStatus('✅ Rapport ouvert dans un nouvel onglet ('+pData.rows.length+' lignes).');
 }
 
-// ── init Grist ───────────────────────────────────────────
+// ── Init Grist ───────────────────────────────────────────
 grist.ready({ requiredAccess: 'read table' });
 
 grist.docApi.listTables().then(tables=>{
@@ -378,12 +311,13 @@ grist.docApi.listTables().then(tables=>{
   const sel=document.getElementById('sel-parent');
   for(const t of tables){
     const o=document.createElement('option');
-    o.value=t; o.textContent=t;
-    sel.appendChild(o);
+    o.value=t; o.textContent=t; sel.appendChild(o);
   }
-  setStatus(tables.length+' table(s) disponible(s).');
+  setStatus(tables.length+' table(s) disponible(s). Choisissez une table mère.');
 }).catch(e=>{
-  setStatus('Erreur listTables : '+e.message);
+  // fallback si listTables échoue : laisser l'utilisateur saisir manuellement
+  setStatus('listTables indisponible ('+e.message+'). Voir console.');
+  console.error('listTables error:', e);
 });
 </script>
 </body>
